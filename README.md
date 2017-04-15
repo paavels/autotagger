@@ -45,7 +45,7 @@ Multiple values are separated by comma
 1. C# / Single thread / Array based run: 13.52sec
 2. Python / Single thread / Array based run: 24.01sec
 3. Python / Single thread / String based run: 24.04sec
-4. Python / Multithreaded: 3.04sec
+4. Python / Multithreaded 8 cores: 3.04sec
 
 C# probably has some issue with IS NOT, but it is definitely faster
 
