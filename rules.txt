@@ -1,0 +1,148 @@
+﻿US West
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+
+US South
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+
+US Midwest
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+
+US Northeast
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+
+US West Premium Homeowners
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS	OWN
+
+US West Premium Renters
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US West Average Homeowners
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS	OWN
+
+US West Average Renters
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US West Garbage Homeowners
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS NOT	A,B,C
+	home_ownership	IS	OWN
+
+US West Garbage Renters
+	addr_state	IS ANY	AZ,WA,OR,HI,CA,AK,WY,UT,NM,NV,MT,ID,CO
+	grade	IS NOT	A,B,C
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US South Premium Homeowners
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS	OWN
+
+US South Premium Renters
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US South Average Homeowners
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS	OWN
+
+US South Average Renters
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US South Garbage Homeowners
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS NOT	A,B,C
+	home_ownership	IS	OWN
+
+US South Garbage Renters
+	addr_state	IS ANY	AR,LA,OK,TX,TN,MS,KY,AL,WV,DC,VA,SC,NC,MD,GA,FL,DE
+	grade	IS NOT	A,B,C
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Midwest Premium Homeowners
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS	OWN
+
+US Midwest Premium Renters
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Midwest Average Homeowners
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS	OWN
+
+US Midwest Average Renters
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Midwest Garbage Homeowners
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS NOT	A,B,C
+	home_ownership	IS	OWN
+
+US Midwest Garbage Renters
+	addr_state	IS ANY	SD,ND,NE,MO,MN,KS,IA,WI,OH,MI,IN,IL
+	grade	IS NOT	A,B,C
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Northeast Premium Homeowners
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS	OWN
+
+US Northeast Premium Renters
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS ANY	A,B
+	sub_grade	IS NOT	B3,B4,B5
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Northeast Average Homeowners
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS	OWN
+
+US Northeast Average Renters
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS ANY	B,C
+	sub_grade	IS NOT	B1,B2
+	home_ownership	IS ANY	RENT,MORTGAGE
+
+US Northeast Garbage Homeowners
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS NOT	A,B,C
+	home_ownership	IS	OWN
+
+US Northeast Garbage Renters
+	addr_state	IS ANY	PA,NY,NJ,VT,RI,NH,MA,ME,CT
+	grade	IS NOT	A,B,C
+	home_ownership	IS ANY	RENT,MORTGAGE
+

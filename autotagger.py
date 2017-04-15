@@ -3,8 +3,10 @@
 
 import csv
 from collections import namedtuple
+from multiprocessing import Pool
 import time
 import sys
+import os
 
 #class Point(namedtuple('Point', 'x y')):
 #     __slots__ = ()
@@ -58,6 +60,10 @@ def parse_expression(expression):
 
 def read_rules(filename):
     """Reads rules from file"""
+
+    if not os.path.exists(filename):
+        print("Rule file {0} not found, aborting".format(filename))
+        return None
 
     with open(filename, "r", encoding="utf-8-sig") as file_pointer:
 
@@ -121,14 +127,43 @@ def search_field_indexes(header_row, rules):
 
     return
 
+def create_result_totals(rules):
+    """Creates array for results"""
+
+    return [0] * len(rules)
+
+def create_chunks(arr, rules, chunk_size):
+    """Split array into chunks"""
+    ret = []
+    for i in range(0, len(arr), chunk_size):
+        ret.append([arr[i:i+chunk_size], rules])
+
+    return ret
+
+def check_rules(lines, rules):
+    """Checks specified lines against rules"""
+
+    results = create_result_totals(rules)
+
+    for row in lines:
+        entry = row.split(",")
+
+        for idx, rule in enumerate(rules):
+            if check_rule(entry, rule):
+                results[idx] += 1
+
+    return results
+
 def parse_file(filename, rules):
     """Parses incoming file and tags the rows according rules"""
 
     print("Reading data from " + filename)
 
-    results = {}
-    for rule in rules:
-        results[rule.name] = 0
+    results = create_result_totals(rules)
+
+    if not os.path.exists(filename):
+        print("File {0} not found, aborting".format(filename))
+        return
 
     with open(filename, "r", encoding="utf-8-sig") as file_pointer:
 
@@ -140,34 +175,39 @@ def parse_file(filename, rules):
 
         search_field_indexes(header_row.split(","), rules)
 
-        lines = 0
+        file_lines = file_pointer.readlines()
+        chunks = create_chunks(file_lines, rules, 10000)
 
-        for row in file_pointer:
-            entry = row.split(",")
+        print("File read into memory")
 
-            for rule in rules:
-                if check_rule(entry, rule):
-                    results[rule.name] += 1
+        thread_count = os.cpu_count()
 
-            if lines % 100000 == 0:
-                print("Processed {0} records".format(lines), end="\r")
-            lines += 1
+        print("Spooling up {0} worker threads".format(thread_count))
 
-    print("Processed {0} records".format(lines))
+        with Pool(thread_count) as pool:
+            thread_results = pool.starmap(check_rules, chunks)
+
+        for result in thread_results:
+            for idx, res in enumerate(result):
+                results[idx] += res
+
+    print("Processed {0} lines".format(len(file_lines)))
+    print("All threads complete")
 
     return results
 
 def print_results(rules, results):
     """Prints results on screen"""
 
+    if not results:
+        return
+
     print("----------------------------------------")
     print("\t\tRESULTS")
     print("----------------------------------------")
 
-    i = 0
-    for rule in rules:
-        i += 1
-        print("{0: >3}. {1: <48} {2: >8}".format(i, rule.name, results[rule.name]))
+    for idx, rule in enumerate(rules):
+        print("{0: >3}. {1: <48} {2: >8}".format(idx, rule.name, results[idx]))
 
     return
 
@@ -196,6 +236,10 @@ def main(argv):
     print("Tagger started")
 
     rules = read_rules("rules.txt")
+
+    if not rules:
+        return
+
     print_rules(rules)
 
     results = parse_file("loan.csv", rules)
