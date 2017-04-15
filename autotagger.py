@@ -176,7 +176,7 @@ def parse_file(filename, rules):
         search_field_indexes(header_row.split(","), rules)
 
         file_lines = file_pointer.readlines()
-        chunks = create_chunks(file_lines, rules, 10000)
+        chunks = create_chunks(file_lines, rules, 100000)
 
         print("File read into memory")
 
