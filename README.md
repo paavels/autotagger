@@ -48,7 +48,9 @@ Multiple values are separated by comma
 4. Python / Multithreaded: 3.04sec
 
 C# probably has some issue with IS NOT, but it is definitely faster
+
 Python is slower, however more nice to work with. Array based run showed same performance as checking parts of string
+
 Probably C# multithreaded solution might be faster, but so far results are VERY good with Python multithreading
 
 Test data used
