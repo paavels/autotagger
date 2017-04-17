@@ -1,21 +1,12 @@
 """This application does simplified categorization of CSV rows based on defined rules."""
 #!/usr/bin/env python
 
-import csv
-from collections import namedtuple
-from multiprocessing import Pool
 import time
 import sys
 import os
-
-#class Point(namedtuple('Point', 'x y')):
-#     __slots__ = ()
-#     @property
-#     def hypot(self):
-#         return (self.x ** 2 + self.y ** 2) ** 0.5
-#    def __str__(self):
-#        return 'Point: x=%6.3f  y=%6.3f  hypot=%6.3f' % (self.x, self.y, self.hypot)
-#
+import csv
+from collections import namedtuple
+from multiprocessing import Pool
 
 class Expression:
     """Expression"""
@@ -154,16 +145,46 @@ def check_rules(lines, rules):
 
     return results
 
-def parse_file(filename, rules):
-    """Parses incoming file and tags the rows according rules"""
+def read_file_csv(filename, rules):
+    """Reads file with CSV reader: slow, but better in case of quoted csv"""
 
     print("Reading data from " + filename)
-
-    results = create_result_totals(rules)
 
     if not os.path.exists(filename):
         print("File {0} not found, aborting".format(filename))
         return
+
+    rows = []
+
+    with open(filename, "r", encoding="utf-8-sig") as file_pointer:
+        reader = csv.reader(file_pointer, delimiter=',')
+
+        line_number = 0
+        for row in reader:
+            line_number += 1
+
+            if line_number == 1:
+                search_field_indexes(row, rules)
+
+            if line_number%50000 == 0:
+                print("Read {0} rows".format(line_number))
+
+            rows.append(row)
+
+    print("Completed reading file, read {0} lines".format(line_number))
+
+    return rows
+
+def read_file(filename, rules):
+    """Read file the dumb way: fast, but cannot parse quoted csv"""
+
+    print("Reading data from " + filename)
+
+    if not os.path.exists(filename):
+        print("File {0} not found, aborting".format(filename))
+        return
+
+    rows = []
 
     with open(filename, "r", encoding="utf-8-sig") as file_pointer:
 
@@ -171,27 +192,41 @@ def parse_file(filename, rules):
 
         if not header_row:
             print("Failed to receive header row")
-            return
+            return None
 
         search_field_indexes(header_row.split(","), rules)
 
-        file_lines = file_pointer.readlines()
-        chunks = create_chunks(file_lines, rules, 100000)
+        rows = file_pointer.readlines()
 
-        print("File read into memory")
+    print("Completed reading file, read {0} lines".format(len(rows)))
 
-        thread_count = os.cpu_count()
+    return rows
 
-        print("Spooling up {0} worker threads".format(thread_count))
+def parse_file(filename, rules):
+    """Parses incoming file and tags the rows according rules"""
 
-        with Pool(thread_count) as pool:
-            thread_results = pool.starmap(check_rules, chunks)
 
-        for result in thread_results:
-            for idx, res in enumerate(result):
-                results[idx] += res
+    results = create_result_totals(rules)
 
-    print("Processed {0} lines".format(len(file_lines)))
+    rows = read_file(filename, rules)
+    if not rows:
+        return
+
+    chunks = create_chunks(rows, rules, 5000)
+
+    print("Number of chunks created: {0}".format(len(chunks)))
+
+    thread_count = os.cpu_count()
+    print("Spooling up {0} worker threads".format(thread_count))
+
+    with Pool(thread_count) as pool:
+        thread_results = pool.starmap(check_rules, chunks)
+
+    for result in thread_results:
+        for idx, res in enumerate(result):
+            results[idx] += res
+
+    print("Processed {0} lines".format(len(rows)))
     print("All threads complete")
 
     return results
@@ -232,7 +267,7 @@ def print_rules(rules):
 def main(argv):
     """Main application block"""
 
-    start_time = time.process_time()
+    start_time = time.perf_counter()
     print("Tagger started")
 
     rules = read_rules("rules.txt")
@@ -245,10 +280,8 @@ def main(argv):
     results = parse_file("loan.csv", rules)
     print_results(rules, results)
 
-    elapsed = time.process_time() - start_time
+    elapsed = time.perf_counter() - start_time
     print("Time elapsed: {0}".format(elapsed))
 
 if __name__ == "__main__":
     main(sys.argv)
-
-# dumb execution string = 24.04

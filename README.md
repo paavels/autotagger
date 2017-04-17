@@ -45,13 +45,15 @@ Multiple values are separated by comma
 1. C# / Single thread / Array based run: 13.52sec
 2. Python / Single thread / Array based run: 24.01sec
 3. Python / Single thread / String based run: 24.04sec
-4. Python / Multithreaded 8 cores: 3.04sec
+4. Python / Multithreaded 8 cores: 7.87sec
 
 C# probably has some issue with IS NOT, but it is definitely faster
 
 Python is slower, however more nice to work with. Array based run showed same performance as checking parts of string
 
 Probably C# multithreaded solution might be faster, but so far results are VERY good with Python multithreading
+
+For #4 - 3.04s was process_time() which does not include waiting for stuff, so still has room for optimization
 
 ### Test data used
 
